@@ -9,6 +9,12 @@ import java.util.List;
 
 public class Main {
 
+    /**
+     * Show @Import.
+     * Show Scan.
+     * Show Lazy
+    * */
+
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 //        ctx.register(MainConfig.class, SecondConfig.class);
