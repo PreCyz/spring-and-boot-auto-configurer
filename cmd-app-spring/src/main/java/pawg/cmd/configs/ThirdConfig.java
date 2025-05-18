@@ -1,7 +1,8 @@
-package pawg.cmd;
+package pawg.cmd.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pawg.cmd.beans.Print;
 
 @Configuration
 public class ThirdConfig {

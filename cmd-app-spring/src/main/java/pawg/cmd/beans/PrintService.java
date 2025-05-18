@@ -1,4 +1,4 @@
-package pawg.cmd;
+package pawg.cmd.beans;
 
 public class PrintService implements Print {
     @Override
