@@ -1,11 +1,10 @@
 package pawg.cmd;
 
+import java.util.List;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import pawg.cmd.beans.Factory;
 import pawg.cmd.beans.Print;
 import pawg.cmd.configs.MainConfig;
-
-import java.util.List;
 
 public class Main {
 

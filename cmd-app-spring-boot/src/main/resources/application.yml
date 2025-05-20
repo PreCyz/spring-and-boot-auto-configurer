@@ -1,7 +1,7 @@
 spring:
   application.name: cmd-app
 
-#printer:
-#  enabled: false
-#  message: Pawg is awesome and have an awesome print service and printer!!!
+printer:
+  enabled: false
+  message: Pawg is awesome and have an awesome print service and printer!!!
 
