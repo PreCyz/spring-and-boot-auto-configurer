@@ -1,6 +1,6 @@
 package awesome.pawg;
 
-import awesome.pawg.events.CacheExample;
+import awesome.pawg.cache.CacheExample;
 import awesome.pawg.events.LogErrorEvent;
 import awesome.pawg.events.LogEvent;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
