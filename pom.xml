@@ -30,7 +30,8 @@
         <module>cmd-app-spring</module>
         <module>spring-xml</module>
         <module>cache-event</module>
-        <module>concurency</module>
+        <module>concurrency</module>
+      <module>reflection</module>
     </modules>
 
     <dependencyManagement>

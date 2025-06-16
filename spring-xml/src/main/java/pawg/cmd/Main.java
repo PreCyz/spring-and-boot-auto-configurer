@@ -1,16 +1,15 @@
 package pawg.cmd;
 
+import java.util.List;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import pawg.cmd.beans.Factory;
 import pawg.cmd.beans.Print;
-
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
-        ctx.refresh();
+//        ctx.refresh();
 
         List.of(
                 ctx.getBean(Print.class),
