@@ -1,6 +1,8 @@
 package pawg.cmd.beans;
 
-public class PlaneFactory implements Factory {
+import org.springframework.beans.factory.InitializingBean;
+
+public class PlaneFactory implements Factory, InitializingBean {
 
     private static final Factory INSTANCE = new PlaneFactory();
 
@@ -13,5 +15,10 @@ public class PlaneFactory implements Factory {
     @Override
     public void produce() {
         System.out.printf("%s produced plane.%n", getClass().getSimpleName());
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.printf("%s after properties set when implementing InitializingBean.%n", getClass().getSimpleName());
     }
 }
