@@ -6,7 +6,7 @@ public class PrintService implements Print {
         System.out.println("How beautiful am I printing?");
     }
 
-    private void init() {
+    private void awesomeInit() {
         System.out.println("Initializing PrintService.");
     }
 }

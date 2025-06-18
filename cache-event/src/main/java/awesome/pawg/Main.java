@@ -13,6 +13,7 @@ public class Main {
         LogErrorEvent error = new LogErrorEvent(Main.class.getName(), "Error Async event!");
 
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MainConfig.class);
+        ctx.scan("awesome.pawg");
         ApplicationEventMulticaster caster = ctx.getBean(ApplicationEventMulticaster.class);
         CacheExample cacheExample = ctx.getBean(CacheExample.class);
 

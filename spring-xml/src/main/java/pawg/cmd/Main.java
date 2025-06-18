@@ -8,8 +8,10 @@ import pawg.cmd.beans.Print;
 public class Main {
 
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
-//        ctx.refresh();
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"beans.xml"});
+
+        //TODO: When context refresh is mandatory?
+        // ctx.refresh();
 
         List.of(
                 ctx.getBean(Print.class),
