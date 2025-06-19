@@ -1,6 +1,7 @@
 package pawg.cmd.beans;
 
 import org.springframework.beans.factory.InitializingBean;
+import pawg.cmd.Main;
 
 public class PlaneFactory implements Factory, InitializingBean {
 
@@ -10,15 +11,20 @@ public class PlaneFactory implements Factory, InitializingBean {
         return INSTANCE;
     }
 
-    private PlaneFactory() {}
+    private PlaneFactory() {
+        System.out.printf("[%d]. %s instantiation.%n", Main.COUNTER.incrementAndGet(), getClass().getSimpleName());
+    }
 
     @Override
     public void produce() {
-        System.out.printf("%s produced plane.%n", getClass().getSimpleName());
+        System.out.printf("[%d]. %s produced plane.%n", Main.COUNTER.incrementAndGet(), getClass().getSimpleName());
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.printf("%s after properties set when implementing InitializingBean.%n", getClass().getSimpleName());
+        System.out.printf("[%d]. %s after properties set when implementing InitializingBean.%n",
+                Main.COUNTER.incrementAndGet(),
+                getClass().getSimpleName()
+        );
     }
 }

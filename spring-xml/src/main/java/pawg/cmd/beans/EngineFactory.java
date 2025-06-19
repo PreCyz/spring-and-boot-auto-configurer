@@ -1,5 +1,7 @@
 package pawg.cmd.beans;
 
+import pawg.cmd.Main;
+
 public class EngineFactory implements Factory {
 
     private final Factory factoryService;
@@ -7,13 +9,14 @@ public class EngineFactory implements Factory {
     private Print printService;
 
     public EngineFactory(Factory factoryService, Factory planeFactory) {
+        System.out.printf("[%d]. %s instantiation.%n", Main.COUNTER.incrementAndGet(), getClass().getSimpleName());
         this.factoryService = factoryService;
         this.planeFactory = planeFactory;
     }
 
     @Override
     public void produce() {
-        System.out.printf("%s produced engine and more.%n", getClass().getSimpleName());
+        System.out.printf("[%d]. %s produced engine and more.%n", Main.COUNTER.incrementAndGet(), getClass().getSimpleName());
         factoryService.produce();
         printService.print();
         planeFactory.produce();
