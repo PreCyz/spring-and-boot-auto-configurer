@@ -31,7 +31,8 @@
         <module>spring-xml</module>
         <module>cache-event</module>
         <module>concurrency</module>
-      <module>reflection</module>
+        <module>reflection</module>
+        <module>common-exceptions</module>
     </modules>
 
     <dependencyManagement>

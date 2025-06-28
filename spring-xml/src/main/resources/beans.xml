@@ -5,11 +5,13 @@
 
     <bean id="factoryService" class="pawg.cmd.beans.FactoryService" />
     <bean id="planeFactory" class="pawg.cmd.beans.PlaneFactory" factory-method="getInstance"/>
+<!--TODO: 3. scope prototype vs singleton    -->
     <bean id="printService" class="pawg.cmd.beans.PrintService" init-method="awesomeInit" scope="singleton"/>
 
     <bean id="zelaznyMordulec" class="pawg.cmd.beans.EngineFactory">
         <constructor-arg ref="factoryService" />
         <constructor-arg ref="planeFactory" />
+<!--TODO: 2. NoSuchBeanDefinitionException: No bean named 'planeFactory' available       -->
         <!--<constructor-arg>
             <bean class="pawg.cmd.beans.PlaneFactory" factory-method="getInstance"/>
         </constructor-arg>-->
