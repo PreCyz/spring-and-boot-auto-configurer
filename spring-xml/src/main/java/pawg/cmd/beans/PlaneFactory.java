@@ -3,6 +3,7 @@ package pawg.cmd.beans;
 import org.springframework.beans.factory.InitializingBean;
 import pawg.cmd.Main;
 
+//TODO: 10. Instantiation - InitializingBean
 public class PlaneFactory implements Factory, InitializingBean {
 
     private static final Factory INSTANCE = new PlaneFactory();

@@ -26,7 +26,7 @@ public class ConfigA {
         return new ServiceA(repoA(repoC));
     }
 
-// TODO: 5. NoUniqueBeanDefinitionException: No qualifying bean of type 'awesome.pawg.ServiceA'
+// TODO: 4. NoUniqueBeanDefinitionException: No qualifying bean of type 'awesome.pawg.ServiceA'
 // available: expected single matching bean but found 2: serviceA,serviceA2
     /*@Bean(name = "serviceA2")
     public ServiceA serviceA2() {

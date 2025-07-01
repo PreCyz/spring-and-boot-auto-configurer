@@ -1,8 +1,9 @@
 package awesome.pawg;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
-// TODO: 7. A circular @Import has been detected. BeanDefinitionParsingException: Configuration problem
+// TODO: 6. A circular @Import has been detected. BeanDefinitionParsingException: Configuration problem
 //@Import({ConfigA.class, ConfigC.class})
 public class ConfigB {
 

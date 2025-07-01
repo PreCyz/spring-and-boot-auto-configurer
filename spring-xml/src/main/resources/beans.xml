@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+<!--TODO: 10. Instantiation and initialization styles-->
     <bean id="factoryService" class="pawg.cmd.beans.FactoryService" />
     <bean id="planeFactory" class="pawg.cmd.beans.PlaneFactory" factory-method="getInstance"/>
 <!--TODO: 3. scope prototype vs singleton    -->

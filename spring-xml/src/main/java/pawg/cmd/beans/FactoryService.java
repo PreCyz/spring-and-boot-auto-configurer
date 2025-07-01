@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.FactoryBean;
 import pawg.cmd.Main;
 
+//TODO: 10. Instantiation FactoryBean style
 public class FactoryService implements Factory, FactoryBean<Factory> {
 
     private FactoryService() {

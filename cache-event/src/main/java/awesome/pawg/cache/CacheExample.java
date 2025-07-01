@@ -1,14 +1,14 @@
 package awesome.pawg.cache;
 
+import java.util.Random;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
-
-import java.util.Random;
 
 public class CacheExample {
 
     private final ApplicationContext applicationContext;
 
+    //TODO: 7. Cache mistake
     public CacheExample(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }

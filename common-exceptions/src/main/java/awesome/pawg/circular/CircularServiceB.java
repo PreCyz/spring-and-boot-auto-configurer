@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class CircularServiceB {
     private final CircularServiceA circularServiceA;
 
-//  TODO: 6. No need for @Autowired on constructor from spring 4.2
+//  TODO: 9. No need for @Autowired on constructor from spring 4.2
 
     public CircularServiceB(CircularServiceA circularServiceA) {
         this.circularServiceA = circularServiceA;

@@ -4,23 +4,22 @@ import java.util.List;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import pawg.cmd.beans.Factory;
 import pawg.cmd.beans.Print;
+import pawg.cmd.beans.scan.EngineFactory;
 import pawg.cmd.configs.MainConfig;
+import pawg.cmd.configs.SecondConfig;
+import pawg.cmd.configs.ThirdConfig;
 
 public class Main {
 
-    /**
-     * Show @Import.
-     * Show Scan.
-     * Show Lazy
-    * */
-
+    // TODO: 0. Basics @Import, scan, @Lazy
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-//        ctx.register(MainConfig.class, SecondConfig.class);
-//        ctx.register(ThirdConfig.class);
-        ctx.register(MainConfig.class);
-        ctx.scan("pawg.cmd.beans.scan");
-        ctx.refresh();
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MainConfig.class);
+//        ctx.register(SecondConfig.class, ThirdConfig.class);
+        ctx.scan("pawg.cmd.beans.scan"); //what will happen when no scan?
+
+        // TODO: 1. When context refresh is mandatory?
+//        ctx.register(EngineFactory.class);
+//        ctx.refresh();
 
         List.of(
                 ctx.getBean(Print.class),

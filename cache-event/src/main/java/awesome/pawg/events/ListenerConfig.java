@@ -12,7 +12,7 @@ public class ListenerConfig {
 
     @Bean
     public PawgPropertyListener pawgPropertyListener(@Value("${pawg.custom}") String custom) {
-        System.out.println("My custom resolver " +  custom);
+        System.out.printf("My custom resolver %s%n", custom);
         return new PawgPropertyListener();
     }
 

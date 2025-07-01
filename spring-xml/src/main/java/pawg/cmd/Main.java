@@ -16,10 +16,6 @@ public class Main {
 
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"beans.xml"});
 
-        // TODO: 1. When context refresh is mandatory?
-
-        // ctx.refresh();
-
         System.out.printf("%nManage phase started ... %n%n");
 
 
