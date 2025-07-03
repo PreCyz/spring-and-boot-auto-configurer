@@ -2,16 +2,13 @@ import awesome.pawg.*;
 import awesome.pawg.circular.CircularServiceA;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Main {
-
-    public final static AtomicInteger COUNTER = new AtomicInteger(0);
 
     public static void main(String[] args) {
         System.out.printf("%nInstantiation and assemble phase started ...%n%n");
 
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigA.class);
+        ctx.setDisplayName("mainContext");
         // TODO: 5. Circular dependency
 //        ctx.scan("awesome.pawg.circular");
 //        ctx.getBean(CircularServiceA.class);

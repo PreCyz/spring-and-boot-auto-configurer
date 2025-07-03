@@ -1,5 +1,6 @@
 package pawg.cmd.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import pawg.cmd.beans.Print;
 import pawg.cmd.beans.PrintService;
