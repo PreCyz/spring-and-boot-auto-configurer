@@ -1,6 +1,7 @@
 package awesome.pawg;
 
 import awesome.pawg.cache.CacheExample;
+import awesome.pawg.events.AsyncEventListener;
 import awesome.pawg.events.LogErrorEvent;
 import awesome.pawg.events.LogEvent;
 import org.springframework.context.ApplicationContext;
@@ -14,19 +15,23 @@ public class Main {
 
         eventCasting(ctx);
 
+        Thread.sleep(50);
+
         cacheExample(ctx);
 
         System.exit(0);
     }
 
     //TODO: 11. Async processing vs event casting
-    private static void eventCasting(AnnotationConfigApplicationContext ctx) {
-        LogEvent log = new LogEvent(Main.class.getName(), "Hello Async event!");
-        LogErrorEvent error = new LogErrorEvent(Main.class.getName(), "Error Async event!");
-
+    private static void eventCasting(AnnotationConfigApplicationContext ctx) throws InterruptedException {
         ApplicationEventMulticaster caster = ctx.getBean(ApplicationEventMulticaster.class);
-        caster.multicastEvent(log); // == ctx.getBean(AsyncEventListener.class).asyncLog(log);
-        caster.multicastEvent(error); // == ctx.getBean(AsyncEventListener.class).asyncLog(error);
+        caster.multicastEvent(new LogEvent(Main.class.getName(), "Hello Async event from event multicaster!")); // == ctx.getBean(AsyncEventListener.class).asyncLog(log);
+        caster.multicastEvent(new LogErrorEvent(Main.class.getName(), "Error Async event from event multicaster!")); // == ctx.getBean(AsyncEventListener.class).asyncLog(error);
+
+        Thread.sleep(50);
+
+        ctx.getBean(AsyncEventListener.class).asyncLog(new LogEvent(Main.class.getName(), "Hello Async event from the bean!"));
+        ctx.getBean(AsyncEventListener.class).asyncLog(new LogErrorEvent(Main.class.getName(), "Error Async event from the bean!"));
     }
 
     //TODO: 7. Cache mistake

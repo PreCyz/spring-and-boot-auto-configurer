@@ -23,7 +23,7 @@ public class ConfigA {
         return new ContrA(serviceA());
     }
 
-// TODO: 4a. Spring will not create 2 exactly the same beans (name and type). It will create 1!!!
+// TODO: 4a. Unconfusing start here: Spring will not create 2 exactly the same beans (name and type). It will create 1!!!
     @Bean
     public ServiceA serviceA() {
         return new ServiceA(repoA(repoC));
