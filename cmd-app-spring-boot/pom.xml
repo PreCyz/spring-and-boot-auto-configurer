@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>cmd-app-spring-boot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>cmd-app</name>
     <description>cmd-app</description>
 
