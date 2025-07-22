@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import pawg.graphql.mappers.BookInputMapper;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -26,8 +25,8 @@ public class BookService {
                              ));
     }
 
-    public BookEntity createBook(BookInput bookInput) {
-        return bookRepository.save(BookInputMapper.INSTANCE.bookInputToBookEntity(bookInput));
+    public BookEntity createBook(BookEntity book) {
+        return bookRepository.save(book);
     }
 
     public BookEntity updateBook(Long id, BookInput bookInput) {
@@ -69,8 +68,8 @@ public class BookService {
         return bookRepository.existsByIdGreaterThan(id);
     }
 
-    public List<BookEntity> createBooks(List<BookInput> bookInputs) {
-        return bookRepository.saveAll(BookInputMapper.INSTANCE.bookInputsToBookEntities(bookInputs));
+    public List<BookEntity> createBooks(List<BookEntity> books) {
+        return bookRepository.saveAll(books);
     }
 
     public List<BookEntity> findAllPaginated(PageRequest pageRequest) {

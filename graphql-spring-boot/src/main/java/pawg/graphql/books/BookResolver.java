@@ -10,6 +10,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
+import pawg.graphql.mappers.BookInputMapper;
 
 @Controller
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -29,12 +30,12 @@ public class BookResolver {
 
     @MutationMapping
     public BookEntity createBook(@Argument BookInput bookInput) {
-        return bookService.createBook(bookInput);
+        return bookService.createBook(BookInputMapper.INSTANCE.bookInputToBookEntity(bookInput));
     }
 
     @MutationMapping
     public List<BookEntity> createBooks(@Argument List<BookInput> bookInputs) {
-        return bookService.createBooks(bookInputs);
+        return bookService.createBooks(BookInputMapper.INSTANCE.bookInputsToBookEntities(bookInputs));
     }
 
     @MutationMapping

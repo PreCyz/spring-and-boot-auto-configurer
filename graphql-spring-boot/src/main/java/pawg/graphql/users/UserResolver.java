@@ -7,6 +7,7 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import pawg.graphql.mappers.UserInputMapper;
 
 @Controller
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -25,6 +26,6 @@ public class UserResolver {
 
     @MutationMapping
     public List<UserEntity> createUsers(@Argument List<UserInput> userInputs) {
-        return userService.createUsers(userInputs);
+        return userService.createUsers(UserInputMapper.INSTANCE.userInputsToUserEntities(userInputs));
     }
 }
