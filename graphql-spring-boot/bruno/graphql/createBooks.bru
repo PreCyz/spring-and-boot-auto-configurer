@@ -1,0 +1,45 @@
+meta {
+  name: createBooks
+  type: graphql
+  seq: 7
+}
+
+post {
+  url: http://localhost:8080/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  mutation CreateNewBooks($bi: [BookInput!]!) {
+  	createBooks(bookInputs: $bi) {
+      id
+      title
+      author
+      publicationYear
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "bi": [
+      {
+        "title": "Ja go",
+        "author": "a on mnie",
+        "publicationYear": 2017
+      },
+      {
+        "title": "Go ja",
+        "author": "Mnie on",
+        "publicationYear": 2018
+      },
+      {
+        "title": "QQ",
+        "author": "Na Muniu",
+        "publicationYear": 2019
+      }
+    ]
+  }
+}

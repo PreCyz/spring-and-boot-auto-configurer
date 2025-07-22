@@ -14,10 +14,27 @@ input BookInput {
 type Query {
     findAllBooks: [Book]
     findBookById(id: ID!): Book
+    booksByCursor(cursor: ID, limit: Int!): BookConnection
 }
 
 type Mutation {
     createBook(bookInput: BookInput!): Book
+    createBooks(bookInputs: [BookInput!]!): [Book]
     updateBook(id: ID!, bookInput: BookInput!): Book
     deleteBook(id: ID!): Boolean
+}
+
+type BookConnection {
+    edges: [BookEdge]
+    bookPageInfo: BookPageInfo
+}
+
+type BookEdge {
+    node: Book
+    cursor: String
+}
+
+type BookPageInfo {
+    hasNextPage: Boolean
+    endCursor: String
 }

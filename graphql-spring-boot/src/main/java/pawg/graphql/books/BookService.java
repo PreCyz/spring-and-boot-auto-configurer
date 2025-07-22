@@ -1,21 +1,17 @@
 package pawg.graphql.books;
 
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import pawg.graphql.mappers.BookMapper;
-import pawg.graphql.mappers.BookMapper2;
+import pawg.graphql.mappers.BookInputMapper;
 
 @Service
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final BookMapper bookMapper;
-    private final BookMapper2 bookMapper2;
 
-    public BookService(BookRepository bookRepository, BookMapper bookMapper, BookMapper2 bookMapper2) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.bookMapper = bookMapper;
-        this.bookMapper2 = bookMapper2;
     }
 
     public List<BookEntity> findAllBooks() {
@@ -32,11 +28,7 @@ public class BookService {
     }
 
     public BookEntity createBook(BookInput bookInput) {
-        BookEntity book = new BookEntity();
-        book.setTitle(bookInput.getTitle());
-        book.setAuthor(bookInput.getAuthor());
-        book.setPublicationYear(bookInput.getPublicationYear());
-        return bookRepository.save(book);
+        return bookRepository.save(BookInputMapper.INSTANCE.bookInputToBookEntity(bookInput));
     }
 
     public BookEntity updateBook(Long id, BookInput bookInput) {
@@ -64,6 +56,22 @@ public class BookService {
                 List.of(),
                 "findBookById"
         );
+    }
+
+    public List<BookEntity> findByIdGreaterThanOrderByIdAsc(Long cursor, PageRequest of) {
+        return bookRepository.findByIdGreaterThanOrderByIdAsc(cursor, of);
+    }
+
+    public List<BookEntity> findAllByOrderByIdAsc(PageRequest of) {
+        return bookRepository.findAllByOrderByIdAsc(of);
+    }
+
+    public boolean existsByIdGreaterThan(Long id) {
+        return bookRepository.existsByIdGreaterThan(id);
+    }
+
+    public List<BookEntity> createBooks(List<BookInput> bookInputs) {
+        return bookRepository.saveAll(BookInputMapper.INSTANCE.bookInputsToBookEntities(bookInputs));
     }
 }
 

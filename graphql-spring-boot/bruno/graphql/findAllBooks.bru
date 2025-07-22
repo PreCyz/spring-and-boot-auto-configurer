@@ -1,0 +1,23 @@
+meta {
+  name: findAllBooks
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query {
+    findAllBooks {
+      id
+      title
+      author
+      publicationYear
+    }
+  }
+  
+}

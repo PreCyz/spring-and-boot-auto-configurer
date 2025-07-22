@@ -1,0 +1,30 @@
+meta {
+  name: booksByCursor
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query {
+    booksByCursor(limit: 2) { 
+      edges { 
+        node { 
+          id 
+          title
+        } 
+        cursor 
+      } 
+      bookPageInfo { 
+        endCursor 
+        hasNextPage 
+      } 
+    } 
+  }
+  
+}

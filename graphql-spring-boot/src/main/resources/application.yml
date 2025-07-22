@@ -50,10 +50,10 @@ logging:
   level:
     com:
       zaxxer:
-        hikari=DEBUG:
+        hikari: INFO
     org:
       springframework:
-        boot: DEBUG
+        boot: INFO
 
 management:
   endpoints:

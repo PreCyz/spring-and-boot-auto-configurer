@@ -84,7 +84,7 @@
 					</annotationProcessorPaths>
 					<compilerArgs>
 						<arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
-						<arg>-Amapstruct.defaultComponentModel=spring</arg>
+<!--						<arg>-Amapstruct.defaultComponentModel=spring</arg>-->
 					</compilerArgs>
 				</configuration>
 			</plugin>
