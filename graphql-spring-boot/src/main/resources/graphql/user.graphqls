@@ -14,7 +14,7 @@ extend type Query {
     findUserById(id: ID!): UserEntity
 }
 
-type UserMutation {
+extend type Mutation {
     createUser(userInput: UserInput!): UserEntity
     createUsers(userInputs: [UserInput!]!): [UserEntity]
     updateUser(id: ID!, userInput: UserInput!): UserEntity

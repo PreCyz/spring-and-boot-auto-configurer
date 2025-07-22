@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pawg.graphql.mappers.UserInputMapper;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -20,5 +21,9 @@ public class UserService {
                 List.of(),
                 "findById"
         ));
+    }
+
+    public List<UserEntity> createUsers(List<UserInput> userInputs) {
+        return userRepository.saveAll(UserInputMapper.INSTANCE.userInputsToUserEntities(userInputs));
     }
 }

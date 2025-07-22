@@ -1,0 +1,41 @@
+meta {
+  name: createUsers
+  type: graphql
+  seq: 10
+}
+
+post {
+  url: http://localhost:8080/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  mutation CreateNewUserss($users: [UserInput!]!) {
+  	createUsers(userInputs: $users) {
+      id
+      nickname
+      email
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "users": [
+      {
+        "nickname": "precyz",
+        "email": "j@j.j"
+      },
+      {
+        "nickname": "p",
+        "email": "p@p.p"
+      },
+      {
+        "nickname": "r",
+        "email": "r@r.r"
+      }
+    ]
+  }
+}
