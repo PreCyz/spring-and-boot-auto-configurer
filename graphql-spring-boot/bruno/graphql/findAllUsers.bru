@@ -1,0 +1,26 @@
+meta {
+  name: findAllUsers
+  type: graphql
+  seq: 9
+}
+
+post {
+  url: http://localhost:8080/graphql
+  body: graphql
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/graphql
+}
+
+body:graphql {
+  query {
+    findAllUsers {
+      id
+      nickname
+      email
+    }
+  }
+  
+}

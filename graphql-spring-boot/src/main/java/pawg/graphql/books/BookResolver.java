@@ -2,27 +2,27 @@ package pawg.graphql.books;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class BookResolver {
 
     private final BookService bookService;
 
-    public BookResolver(BookService bookService) {
-        this.bookService = bookService;
-    }
-
-    @QueryMapping
+    @QueryMapping(name = "findAllBooks")
     public List<BookEntity> findAllBooks() {
         return bookService.findAllBooks();
     }
 
-    @QueryMapping
+    @SchemaMapping(typeName = "Query", field = "findBookById")
     public BookEntity findBookById(@Argument Long id) {
         return bookService.findBookById(id);
     }

@@ -1,0 +1,22 @@
+type UserEntity {
+    id: ID!
+    nickname: String!
+    email: String!
+}
+
+input UserInput {
+    nickname: String!
+    email: String!
+}
+
+extend type Query {
+    findAllUsers: [UserEntity]
+    findUserById(id: ID!): UserEntity
+}
+
+type UserMutation {
+    createUser(userInput: UserInput!): UserEntity
+    createUsers(userInputs: [UserInput!]!): [UserEntity]
+    updateUser(id: ID!, userInput: UserInput!): UserEntity
+    deleteUser(id: ID!): Boolean
+}

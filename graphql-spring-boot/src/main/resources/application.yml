@@ -4,7 +4,6 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/graphql?createDatabaseIfNotExist=true&sslMode=PREFERRED&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-#    driverClassName: com.mysql.cj.jdbc.Driver
     username: react
     password: MysqL12!@
 
@@ -43,6 +42,8 @@ spring:
   graphql:
     graphiql:
       enabled: true #Enable GraphiQL UI for testing
+    schema:
+      file-extensions: .graphqls,.gqls
     http:
       path: /graphql
 
