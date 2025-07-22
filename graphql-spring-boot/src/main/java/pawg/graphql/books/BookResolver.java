@@ -48,6 +48,11 @@ public class BookResolver {
     }
 
     @QueryMapping
+    public List<BookEntity> fetchBooks(@Argument int pageSize, @Argument int pageNumber) {
+        return bookService.findAllPaginated(PageRequest.of(pageNumber, pageSize));
+    }
+
+    @QueryMapping
     public BookConnection booksByCursor(@Argument Long cursor, @Argument int limit) {
         List<BookEntity> books;
 

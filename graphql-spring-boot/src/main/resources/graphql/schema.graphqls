@@ -14,6 +14,7 @@ input BookInput {
 type Query {
     findAllBooks: [Book]
     findBookById(id: ID!): Book
+    fetchBooks(pageSize: Int, pageNumber: Int): [Book]
     booksByCursor(cursor: ID, limit: Int!): BookConnection
 }
 

@@ -1,0 +1,23 @@
+meta {
+  name: fetchBooks
+  type: graphql
+  seq: 8
+}
+
+post {
+  url: http://localhost:8080/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query {
+    fetchBooks(pageSize: 3, pageNumber: 1) {
+      id
+      title
+      author
+      publicationYear
+    }
+  }
+  
+}

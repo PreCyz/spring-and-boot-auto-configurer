@@ -73,5 +73,9 @@ public class BookService {
     public List<BookEntity> createBooks(List<BookInput> bookInputs) {
         return bookRepository.saveAll(BookInputMapper.INSTANCE.bookInputsToBookEntities(bookInputs));
     }
+
+    public List<BookEntity> findAllPaginated(PageRequest pageRequest) {
+        return bookRepository.findAll(pageRequest).stream().toList();
+    }
 }
 
