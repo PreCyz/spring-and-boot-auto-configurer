@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+
+    hikari:
+      pool-name: h2-main-pool
+      driverClassName: org.h2.Driver
+      maximum-pool-size: 8       # Match DB's max_connections - reserved slots
+      minimum-idle: 5             # Keep some connections warm
+      idle-timeout: 60000         # Close idle connections after 1 minute
+      max-lifetime: 1800000       # Replace connections every 30 minutes
+      leak-detection-threshold: 2000  # Log leaks after 2 seconds
+      auto-commit: true
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      data-source-properties:
+        cachePrepStmts: TRUE
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+      platform: mysql
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    open-in-view: off
+    properties:
+      # hibernate.dialect: org.hibernate.dialect.MySQLDialect #Auto-detected, The SQL dialect makes Hibernate generate better SQL for the chosen database
+      hibernate.jdbc.lob.non_contextual_creation: true
+      hibernate.jdbc.time_zone: UTC
+      hibernate.format_sql: true
+
+logging:
+  level:
+    com:
+      zaxxer:
+        hikari: INFO

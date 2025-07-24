@@ -56,15 +56,7 @@ public class BookService {
         );
     }
 
-    public List<BookEntity> findByIdGreaterThanOrderByIdAsc(Long cursor, PageRequest of) {
-        return bookRepository.findByIdGreaterThanOrderByIdAsc(cursor, of);
-    }
-
-    public List<BookEntity> findAllByOrderByIdAsc(PageRequest of) {
-        return bookRepository.findAllByOrderByIdAsc(of);
-    }
-
-    public boolean existsByIdGreaterThan(Long id) {
+    public boolean bookExistsByIdGreaterThan(Long id) {
         return bookRepository.existsByIdGreaterThan(id);
     }
 
@@ -74,6 +66,22 @@ public class BookService {
 
     public List<BookEntity> findAllPaginated(PageRequest pageRequest) {
         return bookRepository.findAll(pageRequest).stream().toList();
+    }
+
+    public List<BookEntity> getBooks(Long cursor, int limit) {
+        if (cursor != null) {
+            return findByIdGreaterThanOrderByIdAsc(cursor, PageRequest.of(0, limit));
+        } else {
+            return findAllByOrderByIdAsc(PageRequest.of(0, limit));
+        }
+    }
+
+    private List<BookEntity> findByIdGreaterThanOrderByIdAsc(Long cursor, PageRequest of) {
+        return bookRepository.findByIdGreaterThanOrderByIdAsc(cursor, of);
+    }
+
+    private List<BookEntity> findAllByOrderByIdAsc(PageRequest of) {
+        return bookRepository.findAllByOrderByIdAsc(of);
     }
 }
 

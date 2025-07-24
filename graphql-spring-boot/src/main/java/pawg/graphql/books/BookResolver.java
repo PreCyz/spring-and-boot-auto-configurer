@@ -55,22 +55,16 @@ public class BookResolver {
 
     @QueryMapping
     public BookConnection booksByCursor(@Argument Long cursor, @Argument int limit) {
-        List<BookEntity> books;
-
-        if (cursor != null) {
-            books = bookService.findByIdGreaterThanOrderByIdAsc(cursor, PageRequest.of(0, limit));
-        } else {
-            books = bookService.findAllByOrderByIdAsc(PageRequest.of(0, limit));
-        }
+        List<BookEntity> books = bookService.getBooks(cursor, limit);
 
         List<BookEdge> edges = books.stream()
                                     .map(book -> new BookEdge(book, book.getId().toString()))
                                     .collect(Collectors.toList());
 
         Long id = books.getLast().getId();
-        String endCursor = books.isEmpty() ? null : id.toString();
-        boolean hasNextPage = !books.isEmpty() && bookService.existsByIdGreaterThan(id);
+        boolean hasNextPage = !books.isEmpty() && bookService.bookExistsByIdGreaterThan(id);
 
+        String endCursor = books.isEmpty() ? null : id.toString();
         BookPageInfo bookPageInfo = new BookPageInfo(hasNextPage, endCursor);
 
         return new BookConnection(edges, bookPageInfo);
