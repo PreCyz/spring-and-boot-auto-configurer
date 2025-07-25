@@ -29,8 +29,12 @@ logging:
         boot: INFO
 
 management:
+  server:
+    port: 8070
   endpoints:
     web:
       base-path: /actuator
       exposure:
         include: auditevents,beans,caches,conditions,configprops,env,flyway,health,httpexchanges,info,integrationgraph,loggers,liquibase,metrics,mappings,quartz,scheduledtasks,sessions,shutdown,startup,threaddump,heapdump,logfile,prometheus
+      path-mapping:
+        health: /status
