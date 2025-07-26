@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre-jammy
+FROM gcr.io/distroless/java21-debian12
 
 WORKDIR spring
 COPY target/*.jar app.jar
