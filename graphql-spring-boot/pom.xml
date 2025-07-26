@@ -83,6 +83,7 @@
           </execution>
         </executions>
         <configuration>
+          <excludeDevtools>true</excludeDevtools>
           <layers>
             <enabled>true</enabled>
           </layers>

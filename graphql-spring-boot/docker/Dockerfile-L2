@@ -1,10 +1,10 @@
-FROM bellsoft/liberica-openjre-debian:24-cds AS builder
+FROM eclipse-temurin:21-jre-jammy AS builder
 WORKDIR /builder
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
-FROM bellsoft/liberica-openjre-debian:24-cds
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /application
 COPY --from=builder /builder/extracted/dependencies/ ./
 COPY --from=builder /builder/extracted/spring-boot-loader/ ./
