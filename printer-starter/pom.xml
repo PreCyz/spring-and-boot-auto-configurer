@@ -9,7 +9,6 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <properties>
-    <java.version>21</java.version>
     <printer.autoconfigure.version>1.0-SNAPSHOT</printer.autoconfigure.version>
   </properties>
 

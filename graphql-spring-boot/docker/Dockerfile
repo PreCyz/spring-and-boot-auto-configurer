@@ -1,5 +1,6 @@
 FROM openjdk:21-jdk-slim
 
+WORKDIR spring
 COPY target/*.jar app.jar
 
 ENV SERVER_PORT=8080
@@ -10,4 +11,4 @@ ENV	SPRING_PROFILES_ACTIVE=h2
 EXPOSE 8080 8080
 EXPOSE 8070 8070
 
-ENTRYPOINT ["java","-jar","/app.jar", "prod"]
+ENTRYPOINT ["java", "-jar", "/spring/app.jar", "h2"]
