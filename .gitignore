@@ -9,3 +9,4 @@ presentations/
 *.iws
 *.iml
 *.ipr
+*-pom.xml

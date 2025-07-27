@@ -1,14 +1,14 @@
 FROM gcr.io/distroless/java21-debian12
 
 WORKDIR spring
-COPY target/*.jar app.jar
+COPY target/graphql*.jar app.jar
 
 ENV SERVER_PORT=8080
 ENV MANAGEMENT_SERVER_PORT=8070
 ENV SERVER_SERVLET_CONTEXT_PATH="/"
 ENV	SPRING_PROFILES_ACTIVE=h2
 
-EXPOSE 8080 8080
-EXPOSE 8070 8070
+EXPOSE 8080 8081
+EXPOSE 8070 8071
 
-ENTRYPOINT ["java", "-jar", "/spring/app.jar", "h2"]
+ENTRYPOINT ["java", "-jar", "/spring/app.jar"]

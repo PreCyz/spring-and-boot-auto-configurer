@@ -73,19 +73,15 @@
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
-          <excludeDevtools>true</excludeDevtools>
           <layers>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
           </layers>
         </configuration>
       </plugin>
@@ -94,7 +90,7 @@
 
   <profiles>
     <profile>
-      <id>docker-no-layers</id>
+      <id>docker-layers</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -111,10 +107,40 @@
               </execution>
             </executions>
             <configuration>
+              <excludeDevtools>true</excludeDevtools>
               <layers>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
               </layers>
             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker-no-layers</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+                <configuration>
+                  <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                      <mainClass>pawg.graphql.GraphqlSpringBootApplication</mainClass>
+                    </transformer>
+                  </transformers>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
