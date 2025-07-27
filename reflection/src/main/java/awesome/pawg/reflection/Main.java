@@ -1,13 +1,14 @@
 package awesome.pawg.reflection;
 
-
 import awesome.pawg.annotations.Pawg;
-
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class Main {
 
-    @Pawg("awesomeAnnotation")
+    @Pawg(value = "awesomeAnnotation", apply = true)
     public static class ReflectionExample {
         private final String myAwesomeName;
 
@@ -23,8 +24,13 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Class<?> clazz = Class.forName("pawg.is.awesome.reflection.Main$ReflectionExample");
+            Class<?> clazz = Class.forName("awesome.pawg.reflection.Main$ReflectionExample");
             System.out.printf("Class Name: %s%n", clazz.getName());
+            Pawg annotation = clazz.getAnnotation(Pawg.class);
+            if (annotation != null) {
+                System.out.printf("@Pawg(value = %s)%n", annotation.value());
+                System.out.printf("@Pawg(apply = %b)%n", annotation.apply());
+            }
 
             // Inspecting fields
             Field[] fields = clazz.getDeclaredFields();
@@ -44,7 +50,7 @@ public class Main {
             _method.invoke(reflectionExample);
 
             // Invoking method
-            Class<?> _clazz = Class.forName("pawg.is.awesome.reflection.Main$ReflectionExample");
+            Class<?> _clazz = Class.forName("awesome.pawg.reflection.Main$ReflectionExample");
             Constructor<?>[] declaredConstructors = _clazz.getDeclaredConstructors();
             declaredConstructors[0].setAccessible(true);
             Object obj = declaredConstructors[0].newInstance("Amazing-Zelazny-Mordulec");
