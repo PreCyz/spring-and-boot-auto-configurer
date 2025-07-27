@@ -1,0 +1,20 @@
+FROM eclipse-temurin:21-jdk-alpine-3.21 AS packager
+
+RUN /opt/java/openjdk/bin/jlink \
+    --module-path /opt/java/openjdk/jmods \
+    --verbose \
+    --add-modules java.base,java.desktop,java.instrument,java.logging,java.management,java.naming,jdk.unsupported,java.security.jgss,java.sql,java.xml \
+    --compress 2 \
+    --no-header-files \
+    --output /opt/jdk-21-min
+
+FROM alpine:3.22.1
+COPY --from=packager /opt/jdk-21-min /opt/jdk-21-min
+COPY target/g*.jar /service/app.jar
+
+ENV JAVA_HOME=/opt/jdk-21-min
+ENV PATH="/opt/jdk-21-min/bin:$PATH"
+
+EXPOSE 8081
+
+ENTRYPOINT ["java", "-jar", "/service/app.jar"]

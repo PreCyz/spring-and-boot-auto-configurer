@@ -7,6 +7,7 @@
         <groupId>awesome-pawg</groupId>
         <artifactId>spring-seminar</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>reflection</artifactId>
