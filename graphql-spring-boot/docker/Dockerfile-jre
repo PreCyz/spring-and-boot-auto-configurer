@@ -1,5 +1,4 @@
 FROM openjdk:21 AS packager
-
 RUN /usr/java/openjdk-21/bin/jlink \
     --module-path /usr/java/openjdk-21/jmods \
     --verbose \
@@ -8,7 +7,8 @@ RUN /usr/java/openjdk-21/bin/jlink \
     --no-header-files \
     --output /opt/jdk-21-min
 
-FROM openjdk:21
+
+FROM eclipse-temurin:21-jre-jammy
 COPY --from=packager /opt/jdk-21-min /opt/jdk-21-min
 COPY target/g*.jar /service/app.jar
 

@@ -1,5 +1,4 @@
 FROM gcr.io/distroless/java21-debian12
-
 WORKDIR spring
 COPY target/graphql*.jar app.jar
 

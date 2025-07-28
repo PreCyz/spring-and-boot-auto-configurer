@@ -1,5 +1,4 @@
 FROM eclipse-temurin:21-jdk-alpine-3.21 AS packager
-
 RUN /opt/java/openjdk/bin/jlink \
     --module-path /opt/java/openjdk/jmods \
     --verbose \
@@ -7,6 +6,7 @@ RUN /opt/java/openjdk/bin/jlink \
     --compress zip-6 \
     --no-header-files \
     --output /opt/jdk-21-min
+
 
 FROM alpine:3.22.1
 COPY --from=packager /opt/jdk-21-min /opt/jdk-21-min
