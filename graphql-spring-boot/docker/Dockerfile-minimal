@@ -13,7 +13,7 @@ COPY --from=packager /opt/jdk-21-min /opt/jdk-21-min
 COPY target/g*.jar /service/app.jar
 
 ENV JAVA_HOME=/opt/jdk-21-min
-ENV PATH="/opt/jdk-21-min/bin:$PATH"
+ENV PATH="$JAVA_HOME/bin:$PATH"
 ENV SERVER_PORT=8080
 ENV MANAGEMENT_SERVER_PORT=8070
 ENV SERVER_SERVLET_CONTEXT_PATH="/"

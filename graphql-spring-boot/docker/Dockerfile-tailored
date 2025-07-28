@@ -17,7 +17,7 @@ FROM alpine:3.22.1
 
 COPY --from=packager /opt/jdk-21-min /opt/jdk-21-min
 ENV JAVA_HOME=/opt/jdk-21-min
-ENV PATH="/opt/jdk-21-min/bin:$PATH"
+ENV PATH="$JAVA_HOME/bin:$PATH"
 
 WORKDIR spring
 COPY --from=packager spring/extracted/dependencies/ ./
