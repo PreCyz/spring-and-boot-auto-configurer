@@ -3,7 +3,7 @@ FROM openjdk:21 AS packager
 RUN /usr/java/openjdk-21/bin/jlink \
     --module-path /usr/java/openjdk-21/jmods \
     --verbose \
-    --add-modules java.base,java.desktop,java.instrument,java.logging,java.management,java.naming,jdk.unsupported,java.security.jgss,java.sql,java.xml,jdk.management \
+    --add-modules java.base,java.desktop,java.instrument,java.logging,java.management,java.naming,java.security.jgss,java.sql,java.xml,jdk.unsupported,jdk.management \
     --compress 2 \
     --no-header-files \
     --output /opt/jdk-21-min

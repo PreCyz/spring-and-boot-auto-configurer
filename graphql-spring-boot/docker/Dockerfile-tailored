@@ -3,7 +3,7 @@ FROM eclipse-temurin:21-jdk-alpine-3.21 AS packager
 RUN /opt/java/openjdk/bin/jlink \
     --module-path /opt/java/openjdk/jmods \
     --verbose \
-    --add-modules java.base,java.desktop,java.instrument,java.logging,java.management,java.naming,jdk.unsupported,java.security.jgss,java.sql,java.xml \
+    --add-modules java.base,java.desktop,java.instrument,java.logging,java.management,java.naming,java.security.jgss,java.sql,java.xml,jdk.unsupported,jdk.management \
     --compress 2 \
     --no-header-files \
     --output /opt/jdk-21-min
