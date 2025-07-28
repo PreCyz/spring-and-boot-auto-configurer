@@ -4,7 +4,7 @@ RUN /usr/java/openjdk-21/bin/jlink \
     --module-path /usr/java/openjdk-21/jmods \
     --verbose \
     --add-modules java.base,java.desktop,java.instrument,java.logging,java.management,java.naming,java.security.jgss,java.sql,java.xml,jdk.unsupported,jdk.management \
-    --compress 2 \
+    --compress zip-6 \
     --no-header-files \
     --output /opt/jdk-21-min
 
