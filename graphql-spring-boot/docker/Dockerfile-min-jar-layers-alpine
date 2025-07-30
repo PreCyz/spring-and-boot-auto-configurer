@@ -9,8 +9,8 @@ RUN /opt/java/openjdk/bin/jlink \
 
 WORKDIR builder
 ARG JAR_FILE=target/g*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
+COPY ${JAR_FILE} app.jar
+RUN java -Djarmode=tools -jar app.jar extract --destination app
 
 
 FROM alpine:3.22.1
@@ -23,12 +23,10 @@ ENV MANAGEMENT_SERVER_PORT=8070
 ENV SERVER_SERVLET_CONTEXT_PATH="/"
 ENV	SPRING_PROFILES_ACTIVE=h2
 
-WORKDIR service
-COPY --from=packager builder/extracted/dependencies/ ./
-COPY --from=packager builder/extracted/snapshot-dependencies/ ./
-COPY --from=packager builder/extracted/spring-boot-loader/ ./
-COPY --from=packager builder/extracted/application/ ./
+WORKDIR app
+COPY --from=packager builder/app/lib/ ./lib/
+COPY --from=packager builder/app/app.jar ./
 
 EXPOSE 8080 8070
 
-ENTRYPOINT ["java", "-jar", "/service/application.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

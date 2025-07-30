@@ -1,4 +1,6 @@
 FROM alpine/java:21.0.4-jdk AS packager
+ARG JAR_FILE=target/g*.jar
+COPY ${JAR_FILE} application.jar
 
 RUN /opt/java/openjdk/bin/jlink \
     --module-path /opt/java/openjdk/jmods \
@@ -7,10 +9,7 @@ RUN /opt/java/openjdk/bin/jlink \
     --compress zip-6 \
     --no-header-files \
     --output /opt/jdk-21-min
-WORKDIR spring
-ARG JAR_FILE=target/g*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract --destination extracted
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
 
 FROM alpine:3.22.1
@@ -23,11 +22,10 @@ ENV MANAGEMENT_SERVER_PORT=8070
 ENV SERVER_SERVLET_CONTEXT_PATH="/"
 ENV	SPRING_PROFILES_ACTIVE=h2
 
-WORKDIR spring
-COPY --from=packager spring/extracted/dependencies/ ./
-COPY --from=packager spring/extracted/snapshot-dependencies/ ./
-COPY --from=packager spring/extracted/spring-boot-loader/ ./
-COPY --from=packager spring/extracted/application/ ./
+COPY --from=packager extracted/dependencies/ ./
+COPY --from=packager extracted/snapshot-dependencies/ ./
+COPY --from=packager extracted/spring-boot-loader/ ./
+COPY --from=packager extracted/application/ ./
 
 EXPOSE 8080 8070
 

@@ -2,7 +2,7 @@ FROM ibm-semeru-runtimes:open-21.0.8_9-jre-noble as builder
 WORKDIR spring
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract --destination extracted
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
 
 FROM gcr.io/distroless/java21-debian12
