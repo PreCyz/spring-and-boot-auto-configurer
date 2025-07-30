@@ -1,0 +1,22 @@
+FROM ibm-semeru-runtimes:open-21.0.8_9-jre-noble as builder
+WORKDIR spring
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract --destination extracted
+
+
+FROM gcr.io/distroless/java21-debian12
+WORKDIR spring
+COPY --from=builder spring/extracted/dependencies/ ./
+COPY --from=builder spring/extracted/snapshot-dependencies/ ./
+COPY --from=builder spring/extracted/spring-boot-loader/ ./
+COPY --from=builder spring/extracted/application/ ./
+
+ENV SERVER_PORT=8080
+ENV MANAGEMENT_SERVER_PORT=8070
+ENV SERVER_SERVLET_CONTEXT_PATH="/"
+ENV	SPRING_PROFILES_ACTIVE=h2
+
+EXPOSE 8080 8070
+
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

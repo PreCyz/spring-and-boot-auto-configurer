@@ -1,0 +1,22 @@
+FROM ibm-semeru-runtimes:open-21.0.8_9-jre-noble AS builder
+WORKDIR /builder
+ARG JAR_FILE=target/g*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
+
+
+FROM ibm-semeru-runtimes:open-21.0.8_9-jre-noble
+WORKDIR /application
+COPY --from=builder /builder/extracted/dependencies/ ./
+COPY --from=builder /builder/extracted/spring-boot-loader/ ./
+COPY --from=builder /builder/extracted/snapshot-dependencies/ ./
+COPY --from=builder /builder/extracted/application/ ./
+
+ENV SERVER_PORT=8080
+ENV MANAGEMENT_SERVER_PORT=8070
+ENV SERVER_SERVLET_CONTEXT_PATH="/"
+ENV	SPRING_PROFILES_ACTIVE=h2
+
+EXPOSE 8080 8070
+
+ENTRYPOINT ["java", "-jar", "application.jar"]

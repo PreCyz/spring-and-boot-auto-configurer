@@ -1,4 +1,5 @@
-FROM eclipse-temurin:21-jdk-alpine-3.21 AS packager
+FROM alpine/java:21.0.4-jdk AS packager
+
 RUN /opt/java/openjdk/bin/jlink \
     --module-path /opt/java/openjdk/jmods \
     --verbose \
@@ -6,11 +7,14 @@ RUN /opt/java/openjdk/bin/jlink \
     --compress zip-6 \
     --no-header-files \
     --output /opt/jdk-21-min
+WORKDIR spring
+ARG JAR_FILE=target/g*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract --destination extracted
 
 
 FROM alpine:3.22.1
 COPY --from=packager /opt/jdk-21-min /opt/jdk-21-min
-COPY target/g*.jar /service/app.jar
 
 ENV JAVA_HOME=/opt/jdk-21-min
 ENV PATH="$JAVA_HOME/bin:$PATH"
@@ -19,7 +23,12 @@ ENV MANAGEMENT_SERVER_PORT=8070
 ENV SERVER_SERVLET_CONTEXT_PATH="/"
 ENV	SPRING_PROFILES_ACTIVE=h2
 
-EXPOSE 8080 8084
-EXPOSE 8070 8074
+WORKDIR spring
+COPY --from=packager spring/extracted/dependencies/ ./
+COPY --from=packager spring/extracted/snapshot-dependencies/ ./
+COPY --from=packager spring/extracted/spring-boot-loader/ ./
+COPY --from=packager spring/extracted/application/ ./
 
-ENTRYPOINT ["java", "-jar", "/service/app.jar"]
+EXPOSE 8080 8070
+
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
