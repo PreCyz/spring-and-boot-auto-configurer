@@ -22,4 +22,4 @@ ENV	SPRING_PROFILES_ACTIVE=h2
 
 EXPOSE 8080 8070
 
-ENTRYPOINT ["java", "-jar", "/service/app.jar"]
+ENTRYPOINT ["java", "-XX:ArchiveClassesAtExit=/opt/jdk-21-min/cds/app-cds.jsa", "-jar", "/service/app.jar"]

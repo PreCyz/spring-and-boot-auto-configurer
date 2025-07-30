@@ -33,4 +33,4 @@ COPY --from=packager spring/extracted/application/ ./
 
 EXPOSE 8080 8070
 
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "-XX:ArchiveClassesAtExit=/opt/jdk-21-min/cds/app-cds.jsa", "org.springframework.boot.loader.launch.JarLauncher"]

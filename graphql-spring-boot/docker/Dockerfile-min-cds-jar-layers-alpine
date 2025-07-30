@@ -6,13 +6,14 @@ RUN /opt/java/openjdk/bin/jlink \
     --compress zip-6 \
     --no-header-files \
     --output /opt/jdk-21-min
-RUN /opt/jdk-21-min/bin/java -Xshare:dump
+# RUN /opt/jdk-21-min/bin/java -Xshare:dump
 RUN mkdir /opt/jdk-21-min/cds
 
 WORKDIR builder
 ARG JAR_FILE=target/g*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
+COPY $JAR_FILE app.jar
+RUN /opt/jdk-21-min/bin/java -Djarmode=tools -jar app.jar extract --destination app
+RUN /opt/jdk-21-min/bin/java -XX:ArchiveClassesAtExit=/opt/jdk-21-min/cds/app-cds.jsa -Dspring.context.exit=onRefresh -jar app/app.jar
 
 FROM alpine:3.22.1
 COPY --from=packager /opt/jdk-21-min /opt/jdk-21-min
@@ -25,11 +26,9 @@ ENV SERVER_SERVLET_CONTEXT_PATH="/"
 ENV	SPRING_PROFILES_ACTIVE=h2
 
 WORKDIR service
-COPY --from=packager builder/extracted/dependencies/ ./
-COPY --from=packager builder/extracted/snapshot-dependencies/ ./
-COPY --from=packager builder/extracted/spring-boot-loader/ ./
-COPY --from=packager builder/extracted/application/ ./
+COPY --from=packager builder/app/lib/ ./lib/
+COPY --from=packager builder/app/app.jar ./
 
 EXPOSE 8080 8070
 
-ENTRYPOINT ["java", "-XX:ArchiveClassesAtExit=/opt/jdk-21-min/cds/app-cds.jsa", "-jar", "/service/application.jar"]
+ENTRYPOINT ["java", "-XX:SharedArchiveFile=/opt/jdk-21-min/cds/app-cds.jsa", "-jar", "/service/app.jar"]
