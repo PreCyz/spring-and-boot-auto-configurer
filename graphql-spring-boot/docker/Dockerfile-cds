@@ -21,11 +21,10 @@ RUN jlink \
     --no-header-files \
     --no-man-pages \
     --output $CUSTOM_JRE
+
 RUN mkdir $CUSTOM_JRE/cds
 RUN $CUSTOM_JRE/bin/java -Xshare:dump
-
-WORKDIR app
-RUN $CUSTOM_JRE/bin/java -XX:ArchiveClassesAtExit=$CUSTOM_JRE/cds/app.jsa -Dspring.context.exit=onRefresh -Dspring.profiles.active=appcds,h2 -jar app.jar
+RUN $CUSTOM_JRE/bin/java -XX:ArchiveClassesAtExit=$CUSTOM_JRE/cds/app.jsa -Dspring.context.exit=onRefresh -Dspring.profiles.active=appcds,h2 -jar /app/app.jar
 
 
 FROM alpine:3.22.1 AS runner
@@ -38,11 +37,9 @@ ENV MANAGEMENT_SERVER_PORT=8070
 ENV SERVER_SERVLET_CONTEXT_PATH="/"
 ENV	SPRING_PROFILES_ACTIVE=h2
 
-WORKDIR app
-COPY --from=packager app/lib/ ./lib
-COPY --from=packager app/app.jar ./
-COPY docker/run.sh run.sh
+COPY --from=packager app/lib/ /app/lib
+COPY --from=packager app/app.jar /app
 
 EXPOSE 8080 8070
 
-ENTRYPOINT ["sh", "/app/run.sh"]
+ENTRYPOINT ["java", "-Xlog:cds", "-Xshare:on", "-XX:SharedArchiveFile=/opt/min_jre/cds/app.jsa", "-jar", "/app/app.jar"]
