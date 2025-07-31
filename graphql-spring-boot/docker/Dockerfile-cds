@@ -16,7 +16,6 @@ RUN $CUSTOM_JRE/bin/java -Xshare:dump
 RUN $CUSTOM_JRE/bin/java -Djarmode=tools -jar app.jar extract --destination app
 
 WORKDIR app
-RUN #$CUSTOM_JRE/bin/java -XX:DumpLoadedClassList=$CUSTOM_JRE/cds/classes.lst -XX:ArchiveClassesAtExit=$CUSTOM_JRE/cds/app.jsa -Dspring.context.exit=onRefresh -jar app.jar
 RUN $CUSTOM_JRE/bin/java -XX:ArchiveClassesAtExit=$CUSTOM_JRE/cds/app.jsa -Dspring.context.exit=onRefresh -jar app.jar
 
 
