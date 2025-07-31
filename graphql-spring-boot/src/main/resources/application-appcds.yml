@@ -1,0 +1,22 @@
+spring:
+  main:
+    banner-mode: off
+
+logging:
+  level:
+    org:
+      springframework:
+        boot: off
+      hibernate: off
+    com:
+      zaxxer:
+        hikari: off
+    root: off
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health
+        exclude: info

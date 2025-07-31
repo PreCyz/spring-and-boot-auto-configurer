@@ -16,7 +16,7 @@ RUN $CUSTOM_JRE/bin/java -Xshare:dump
 RUN $CUSTOM_JRE/bin/java -Djarmode=tools -jar app.jar extract --destination app
 
 WORKDIR app
-RUN $CUSTOM_JRE/bin/java -XX:ArchiveClassesAtExit=$CUSTOM_JRE/cds/app.jsa -Dspring.context.exit=onRefresh -jar app.jar
+RUN $CUSTOM_JRE/bin/java -XX:ArchiveClassesAtExit=$CUSTOM_JRE/cds/app.jsa -Dspring.context.exit=onRefresh -Dspring.profiles.active=appcds,h2 -jar app.jar
 
 
 FROM alpine:3.22.1 AS runner
