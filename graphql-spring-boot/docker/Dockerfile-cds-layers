@@ -2,8 +2,10 @@ FROM alpine/java:21.0.4-jdk AS packager
 ARG JAR_FILE=target/g*.jar
 
 COPY $JAR_FILE app.jar
+# Extrackting jar into layers structure
 RUN java -Djarmode=tools -jar app.jar extract --layers --destination app
 
+# Dynamic module calculcation - find required modules based on the dependencies located in the layer 'dependencies/lib/*jar'
 RUN jdeps \
     --ignore-missing-deps -quiet \
     --recursive \
@@ -12,6 +14,7 @@ RUN jdeps \
     --class-path '/app/dependencies/lib/*' \
     /app/application/app.jar > /app/deps.info
 
+# Building custom runtime based on the modules calculcated in a previous step
 RUN jlink \
     --module-path /opt/java/openjdk/jmods \
     --add-modules $(cat /app/deps.info) \
@@ -21,30 +24,46 @@ RUN jlink \
     --no-man-pages \
     --output /opt/minJRE/
 
+# Start building AppCDS
 RUN mkdir /opt/minJRE/cds
 RUN /opt/minJRE/bin/java -Xshare:dump
+# IMPORTANT!!! Exactly the same files must be used for building the AppCDS cache and for execution of the app.
+# That's way dependencies must be moved from one location to the other location. From this point the dependency layer is broken.
 RUN mv -v /app/dependencies/lib /app/application/
 
 WORKDIR /app/application
-RUN /opt/minJRE/bin/java -XX:ArchiveClassesAtExit=/opt/minJRE/cds/app.jsa -Dspring.context.exit=onRefresh -Dspring.profiles.active=appcds,h2 -jar app.jar
+
+# To build AppCDS the app.jar must be executed. It will work if app.jar has the 'lib' with dependencies in the same directory.
+RUN /opt/minJRE/bin/java \
+    -XX:ArchiveClassesAtExit=/opt/minJRE/cds/app.jsa  \
+    -Dspring.context.exit=onRefresh  \
+    -Dspring.profiles.active=appcds,h2  \
+    -jar app.jar
+# The `dependency` layer must be fixed by reversing the mv command executed earlier.
 RUN mv -v /app/application/lib /app/dependencies/
+
+# At this point the 'packeger' has:
+# - custom runtime availebe under /opt/minJRE/
+# - AppCDS cache availebe under /opt/minJRE/cds/app.jsa
+# - Layered folder structer for the spring boot application availbe under /app/
 
 FROM alpine:3.22.1 AS runner
 COPY --from=packager /opt/minJRE /opt/minJRE
 
 ENV JAVA_HOME=/opt/minJRE
 ENV PATH="$JAVA_HOME/bin:$PATH"
-ENV SERVER_PORT=8080
-ENV MANAGEMENT_SERVER_PORT=8070
-ENV SERVER_SERVLET_CONTEXT_PATH="/"
-ENV	SPRING_PROFILES_ACTIVE=h2
 
 COPY --from=packager /app/dependencies/ ./
 COPY --from=packager /app/spring-boot-loader/ ./
 COPY --from=packager /app/snapshot-dependencies/ ./
 COPY --from=packager /app/application/ ./
 
+ENV SERVER_PORT=8080
+ENV MANAGEMENT_SERVER_PORT=8070
+ENV SERVER_SERVLET_CONTEXT_PATH="/"
+ENV	SPRING_PROFILES_ACTIVE=h2
+
 EXPOSE 8080 8070
 
-#ENTRYPOINT ["java", "-Xshare:on", "-XX:SharedArchiveFile=/opt/minJRE/cds/app.jsa", "-jar", "/app/application/app.jar"]
-ENTRYPOINT ["java", "-Xlog:cds", "-Xshare:on", "-XX:SharedArchiveFile=/opt/minJRE/cds/app.jsa", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xshare:on", "-XX:SharedArchiveFile=/opt/minJRE/cds/app.jsa", "-jar", "/app/application/app.jar"]
+#ENTRYPOINT ["java", "-Xlog:cds", "-Xshare:on", "-XX:SharedArchiveFile=/opt/minJRE/cds/app.jsa", "-jar", "app.jar"]
