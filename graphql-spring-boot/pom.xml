@@ -79,11 +79,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <layers>
-            <enabled>false</enabled>
-          </layers>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -92,7 +87,7 @@
     <profile>
       <id>docker-layers</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <build>
         <plugins>
@@ -119,7 +114,7 @@
     <profile>
       <id>docker-no-layers</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
       </activation>
       <build>
         <plugins>

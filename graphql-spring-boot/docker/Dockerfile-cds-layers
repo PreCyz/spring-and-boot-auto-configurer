@@ -1,0 +1,50 @@
+FROM alpine/java:21.0.4-jdk AS packager
+ARG JAR_FILE=target/g*.jar
+
+COPY $JAR_FILE app.jar
+RUN java -Djarmode=tools -jar app.jar extract --layers --destination app
+
+RUN jdeps \
+    --ignore-missing-deps -quiet \
+    --recursive \
+    --multi-release 21 \
+    --print-module-deps \
+    --class-path '/app/dependencies/lib/*' \
+    /app/application/app.jar > /app/deps.info
+
+RUN jlink \
+    --module-path /opt/java/openjdk/jmods \
+    --add-modules $(cat /app/deps.info) \
+    --strip-debug \
+    --compress zip-6 \
+    --no-header-files \
+    --no-man-pages \
+    --output /opt/minJRE/
+
+RUN mkdir /opt/minJRE/cds
+RUN /opt/minJRE/bin/java -Xshare:dump
+RUN mv -v /app/dependencies/lib /app/application/
+
+WORKDIR /app/application
+RUN /opt/minJRE/bin/java -XX:ArchiveClassesAtExit=/opt/minJRE/cds/app.jsa -Dspring.context.exit=onRefresh -Dspring.profiles.active=appcds,h2 -jar app.jar
+RUN mv -v /app/application/lib /app/dependencies/
+
+FROM alpine:3.22.1 AS runner
+COPY --from=packager /opt/minJRE /opt/minJRE
+
+ENV JAVA_HOME=/opt/minJRE
+ENV PATH="$JAVA_HOME/bin:$PATH"
+ENV SERVER_PORT=8080
+ENV MANAGEMENT_SERVER_PORT=8070
+ENV SERVER_SERVLET_CONTEXT_PATH="/"
+ENV	SPRING_PROFILES_ACTIVE=h2
+
+COPY --from=packager /app/dependencies/ ./
+COPY --from=packager /app/spring-boot-loader/ ./
+COPY --from=packager /app/snapshot-dependencies/ ./
+COPY --from=packager /app/application/ ./
+
+EXPOSE 8080 8070
+
+#ENTRYPOINT ["java", "-Xshare:on", "-XX:SharedArchiveFile=/opt/minJRE/cds/app.jsa", "-jar", "/app/application/app.jar"]
+ENTRYPOINT ["java", "-Xlog:cds", "-Xshare:on", "-XX:SharedArchiveFile=/opt/minJRE/cds/app.jsa", "-jar", "app.jar"]
