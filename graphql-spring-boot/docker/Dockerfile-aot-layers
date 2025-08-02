@@ -1,0 +1,41 @@
+FROM bellsoft/liberica-openjre-alpine:24.0.2-cds AS builder
+ARG JAR_FILE=target/q*.jar
+
+COPY target/*.jar application.jar
+
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination app
+RUN mv -v /app/dependencies/lib /app/application/
+
+WORKDIR /app/application
+
+RUN java  \
+    -XX:AOTMode=record  \
+    -XX:AOTConfiguration=app.aotconf  \
+    -Dspring.profiles.active=appcds,h2  \
+    -Dspring.context.exit=onRefresh  \
+    -jar application.jar
+
+RUN java  \
+    -XX:AOTMode=create  \
+    -XX:AOTConfiguration=app.aotconf  \
+    -XX:AOTCache=app.aot  \
+    -jar application.jar  \
+    && rm app.aotconf
+
+RUN mv -v /app/application/lib /app/dependencies/
+
+FROM bellsoft/liberica-openjre-alpine:24.0.2-cds
+COPY --from=builder /app/dependencies/ ./
+COPY --from=builder /app/spring-boot-loader/ ./
+COPY --from=builder /app/snapshot-dependencies/ ./
+COPY --from=builder /app/application/ ./
+
+ENV SERVER_PORT=8080
+ENV MANAGEMENT_SERVER_PORT=8070
+ENV SERVER_SERVLET_CONTEXT_PATH="/"
+ENV	SPRING_PROFILES_ACTIVE=h2
+
+EXPOSE 8080 8070
+
+ENTRYPOINT ["java", "-XX:AOTCache=app.aot", "-jar", "application.jar"]
+#ENTRYPOINT ["java", "-Xlog:cds", "-XX:AOTCache=app.aot", "-jar", "application.jar"]
