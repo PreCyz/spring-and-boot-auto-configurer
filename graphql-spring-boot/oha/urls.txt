@@ -1,0 +1,8 @@
+http://localhost:8070/actuator/status
+http://localhost:8070/actuator/beans
+http://localhost:8070/actuator/caches
+http://localhost:8070/actuator/configprops
+http://localhost:8070/actuator/env
+http://localhost:8070/actuator/info
+http://localhost:8070/actuator/loggers
+http://localhost:8070/actuator/mappings

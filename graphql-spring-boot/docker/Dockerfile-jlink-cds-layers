@@ -45,7 +45,7 @@ RUN mv -v /app/application/lib /app/dependencies/
 # At this point the 'packeger' has:
 # - custom runtime availebe under /opt/minJRE/
 # - AppCDS cache availebe under /opt/minJRE/cds/app.jsa
-# - Layered folder structer for the spring boot application availbe under /app/
+# - Layered folder structure for the spring boot application availbe under /app/
 
 FROM alpine:3.22.1 AS runner
 COPY --from=packager /opt/minJRE /opt/minJRE
