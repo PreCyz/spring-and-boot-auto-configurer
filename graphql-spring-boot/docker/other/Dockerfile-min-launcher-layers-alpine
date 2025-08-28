@@ -1,6 +1,6 @@
 FROM alpine/java:21.0.4-jdk AS packager
 ARG JAR_FILE=target/g*.jar
-COPY ${JAR_FILE} application.jar
+COPY ${JAR_FILE} app.jar
 
 RUN /opt/java/openjdk/bin/jlink \
     --module-path /opt/java/openjdk/jmods \
@@ -9,7 +9,7 @@ RUN /opt/java/openjdk/bin/jlink \
     --compress zip-6 \
     --no-header-files \
     --output /opt/jdk-21-min
-RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
+RUN java -Djarmode=tools -jar app.jar extract --layers --launcher --destination extracted
 
 
 FROM alpine:3.22.1

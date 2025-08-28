@@ -6,8 +6,10 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination app
 
 FROM gcr.io/distroless/java21-debian12
 WORKDIR app
-COPY --from=packager app/lib/ ./lib/
-COPY --from=packager app/application.jar ./
+COPY --from=builder app/dependencies/ ./
+COPY --from=builder app/snapshot-dependencies/ ./
+COPY --from=builder app/spring-boot-loader/ ./
+COPY --from=builder app/application/ ./
 
 ENV SERVER_PORT=8080
 ENV MANAGEMENT_SERVER_PORT=8070
